@@ -196,7 +196,7 @@ parseParseFormula <- function(lst){
 #' @param x2 the new vector, which is inserted into \code{x1}
 #' @param indx the index for where \code{x2} should be inserted into \code{x1}
 #' 
-#' @return 
+#' @return a vector
 #' 
 #' @keywords internal
 #' @noRd
@@ -415,7 +415,7 @@ parseList <- function(lst){
         for(i in 1:len){
           nms[i] <- nmtmp[i*2]
         }
-      } else if(class(indx2)=="integer"){
+      } else if(inherits(indx2, "integer")){
         nms <- getnm(nms, max(indx2))
       } else if(dim(indx2)[2]==1) {
         nms <- getnm(nms, max(indx2))
@@ -762,7 +762,7 @@ pasteTwo <- function(vec){
 #' @param var the variable itself
 #' @param type a string, corresponding to either "polynomial" or "dummy"
 #' 
-#' @return 
+#' @return a list
 #' 
 #' @keywords internal
 #' @noRd
@@ -799,7 +799,7 @@ addArgs <- function(varname, var, type){
 #' @param str what to paste onto the original vector (after)
 #' @param num the numbers to add to the end of the original vector
 #' 
-#' @return 
+#' @return a vector of strings
 #' 
 #' @keywords internal
 #' @noRd
@@ -818,7 +818,7 @@ pasteOn <- function(x, str, num){
 #' 
 #' @param vec
 #' 
-#' @return 
+#' @return a vector
 #' 
 #' @keywords internal
 #' @noRd
@@ -837,7 +837,7 @@ pastePair <- function(vec){
 #' 
 #' @param vec a vector of integers
 #' 
-#' @return 
+#' @return a vector
 #' 
 #' @keywords internal
 #' @noRd
@@ -858,7 +858,7 @@ movingSum <- function(vec){
 #' @param num an index
 #' @param vec a vector of integers (indices)
 #' 
-#' @return 
+#' @return a vector
 #' 
 #' @keywords internal
 #' @noRd
@@ -878,7 +878,6 @@ myNext <- function(num, vec){
 #' @param h hyperpreds
 #' @param mf model frame
 #' 
-#' @return 
 #' 
 #' @keywords internal
 #' @noRd
@@ -991,7 +990,6 @@ reFormatReg <- function(p, h, mf){
 #' @param pds predictor
 #' @param tms terms vector
 #' 
-#' @return 
 #' 
 #' @keywords internal
 #' @noRd
@@ -1021,7 +1019,6 @@ createCols <- function(pds, tms){
 #' @param col a column vector
 #' @param nested a vector of booleans (I think...)
 #' 
-#' @return 
 #' 
 #' @keywords internal
 #' @noRd
@@ -1109,7 +1106,6 @@ uWaldtest <- function (full, contrasts=c(0,rep(1,p-1)), hypothesis=matrix(0,r,1)
 #' @param vec a vector
 #' @param n index for which we'll take all values of \code{vec} after \code{n}
 #' 
-#' @return 
 #' 
 #' @keywords internal
 #' @noRd
@@ -1128,7 +1124,6 @@ getn <- function(vec, n){
 #' @param indx index for which column \code{col} should be inserted into
 #' @param col the column to insert
 #' 
-#' @return 
 #' 
 #' @keywords internal
 #' @noRd
@@ -1776,66 +1771,5 @@ predict.uRegress <- function(object, interval="prediction",level=0.95,...){
 }
 
 
-#' Extract Residuals from \code{uRegress} objects
-#' 
-#' Extracts residuals (unstandardized, standardized, studentized, or jackknife)
-#' from \code{uRegress} objects.
-#' 
-#' Relies on
-#' functionality from the \code{stats} package to return residuals from the
-#' \code{uRegress} object. \code{"studentized"} residuals are computed as
-#' internally studentized residuals, while \code{"jackknife"} computes the
-#' externally studentized residuals.
-#' 
-#' @aliases residuals.uRegress residuals
-#' 
-#' @param object an object of class \code{uRegress}, as returned by
-#' \link[rigr]{regress}.
-#' @param type denotes the type of residuals to return. Default value is
-#' \code{""}, which returns unstandardized residuals. \code{"standardized"},
-#' \code{"studentized"}, and \code{"jackknife"} return the expected type of
-#' residuals.
-#' @param ...  other arguments 
-#' @return Returns the type of residuals
-#' requested. 
-#' @seealso \code{\link[rigr]{regress}}, \code{\link[stats]{rstudent}},
-#' \code{\link[stats]{rstandard}}
-#' @examples
-#' 
-#' # Reading in a dataset
-#' data(mri)
-#' 
-#' # Create a uRegress object, regressing ldl on age
-#' ldlReg <- regress("mean", age~ldl, data=mri)
-#' 
-#' # Get the studentized residuals
-#' residuals(ldlReg, "studentized")
-#' 
-#' # Get the jackknifed residuals
-#' residuals(ldlReg, "jackknife")
-#' 
-#' @export
-residuals.uRegress <- function(object, type="", ...){
 
-  if(!("uRegress" %in% class(object))){
-    stop("The first argument entered must be a uRegress object.")
-  }
-  if(type != "" & !(type %in% c("standardized", "studentized", "jackknife"))){
-    stop("The type of residual must either be not entered or must be standardized, studentized, or jackknife.")
-  }
-  ## if type is not entered, assume regular residuals
-  if(type==""){
-    return(object$residuals)
-  }
-  if(type=="jackknife"){
-    return(stats::rstudent(object$fit))
-  }
-  if(type=="studentized"){
-    return(stats::rstandard(object$fit))
-  }
-  if(type=="standardized"){
-    sigmahat <- (sum(object$residuals^2))/(length(object$residuals)-object$df[1])
-    return(object$residuals/(sigmahat))
-  }
-}
 
