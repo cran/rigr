@@ -22,13 +22,13 @@ tasks and enable learners to focus on statistical concepts.
 [`uwIntroStats`](https://CRAN.R-project.org/package=uwIntroStats),
 provides easy-to-use interfaces for descriptive statistics, one- and
 two-sample inference, and regression analyses. `rigr` output includes
-key information while omitting unncessary details that can be confusing
+key information while omitting unnecessary details that can be confusing
 to beginners. Heteroskedasticity-robust (“sandwich”) standard errors are
 returned by default, and multiple partial F-tests and tests for
 contrasts are easy to specify. A single regression function
-(`regress()`) can fit both linear and generalized linear models,
-allowing students to more easily make connections between different
-classes of models.
+(`regress()`) can fit both linear models, generalized linear models, and
+proportional hazards models, allowing students to more easily make
+connections between different classes of models.
 
 ## Installation
 
@@ -66,10 +66,12 @@ Maintainer: [Amy Willis](http://statisticaldiversitylab.com/)
 Authors: [Scott S Emerson](http://www.emersonstatistics.com/), [Brian D
 Williamson](https://bdwilliamson.github.io/), [Charles
 Wolock](https://cwolock.github.io/), [Taylor
-Okonek](https://taylorokonek.github.io/), [Jim
+Okonek](https://taylorokonek.github.io/), [Yiqun T
+Chen](https://yiqunchen.github.io/), [Jim
 Hughes](https://www.biostat.washington.edu/people/james-hughes), [Amy
 Willis](http://statisticaldiversitylab.com/), [Andrew J
-Spieker](https://andrewspieker.com/) and Travis Y Hee Wai.
+Spieker](https://www.vumc.org/biostatistics/person/andrew-spieker) and
+Travis Y Hee Wai.
 
 ## Issues
 

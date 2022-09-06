@@ -11,6 +11,10 @@ regress("odds", diabetes ~ sex, data = mri)
 regress("rate", yrsquit ~ age, data = mri)
 
 ## -----------------------------------------------------------------------------
+library(survival)
+regress("hazard", Surv(obstime, death)~age, data=mri)
+
+## -----------------------------------------------------------------------------
 regress("geometric mean", packyrs ~ age, data = mri)
 
 ## -----------------------------------------------------------------------------
