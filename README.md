@@ -37,18 +37,19 @@ You can install the stable release of `rigr` from CRAN as follows:
     install.packages("rigr")
 
 You can install the development version of `rigr` from GitHub using the
-code below.
+code below. The installment is through the `R` package `remotes`.
 
-    remotes::install_github("statdivlab/rigr")
+    #> Using GitHub PAT from the git credential store.
+    #> Skipping install of 'rigr' from a github remote, the SHA1 (8b901ee9) has not changed since last install.
+    #>   Use `force = TRUE` to force installation
 
 If this produces an error, please run `install.packages("remotes")`
 first then try the above line again.
 
-`rigr` is maintained by the
-[StatDivLab](http://statisticaldiversitylab.com/), but relies on
-community support to log issues and implement new features. Is there a
-method you would like to have implemented? Please submit a pull request
-or start a
+`rigr` is maintained by the [StatDivLab](https://statdivlab.github.io/),
+but relies on community support to log issues and implement new
+features. Is there a method you would like to have implemented? Please
+submit a pull request or start a
 [discussion](https://github.com/statdivlab/rigr/discussions/)!
 
 ## Documentation
@@ -61,7 +62,7 @@ including `ttest`, `wilcoxon`, and `proptest`.
 
 ## Humans
 
-Maintainer: [Amy Willis](http://statisticaldiversitylab.com/)
+Maintainer: [Amy Willis](https://statdivlab.github.io/)
 
 Authors: [Scott S Emerson](http://www.emersonstatistics.com/), [Brian D
 Williamson](https://bdwilliamson.github.io/), [Charles
@@ -69,7 +70,7 @@ Wolock](https://cwolock.github.io/), [Taylor
 Okonek](https://taylorokonek.github.io/), [Yiqun T
 Chen](https://yiqunchen.github.io/), [Jim
 Hughes](https://www.biostat.washington.edu/people/james-hughes), [Amy
-Willis](http://statisticaldiversitylab.com/), [Andrew J
+Willis](https://statdivlab.github.io/), [Andrew J
 Spieker](https://www.vumc.org/biostatistics/person/andrew-spieker) and
 Travis Y Hee Wai.
 
@@ -82,3 +83,9 @@ a pull request](https://github.com/statdivlab/rigr/pulls/)!
 Do you have a **question**? Please first check out the vignettes, then
 please post on the
 [Discussions](https://github.com/statdivlab/rigr/discussions/).
+
+## Code of Conduct
+
+Please note that the rigr project is released with a [Contributor Code
+of Conduct](https://statdivlab.github.io/rigr/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.

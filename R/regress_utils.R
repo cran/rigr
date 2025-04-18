@@ -1103,7 +1103,7 @@ uWaldtest <- function (full, contrasts=c(0,rep(1,p-1)), hypothesis=matrix(0,r,1)
     rslt <- c(Fstat, pval,r,df.den)
     names(rslt) <- c("F stat","p value","num df","den df")
   } else {
-    pval <- 1-stats::pchisq(Fstat,r,)
+    pval <- 1-stats::pchisq(r*Fstat,r)
     rslt <- c(Fstat, pval,r)
     names(rslt) <- c("Chi2 stat","p value","df")
   }
@@ -1787,6 +1787,7 @@ printerGlm <- function (x, digits = max(3L, getOption("digits") - 3L), symbolic.
   invisible(x)
 }
 
+#' @export
 print.augCoefficients <-
   function (x,...,sigfigs=max(3,getOption("digits")-3),width=9,nonsci.limit=5,Psci=FALSE) {
     
@@ -1850,6 +1851,7 @@ print.augCoefficients <-
     invisible(frmtCoefficients)
   }
 
+#' @export
 fitted.uRegress <-
   function (object,...,X) {
     

@@ -211,6 +211,12 @@ regress <- function(fnctl, formula, data,
   # if intercept = FALSE, add a "-1" to the formula
   if (!intercept) {
     form <- deparse(formula)
+    # if formula is very long, deparse will split into several lines 
+    # (based on width.cutoff argument, default is 60)
+    # if this happens, paste it back into a single element 
+    if (length(form) > 1) {
+      form <- paste0(form, collapse = "")
+    }
     form <- paste(form, "-1")
     formula <- stats::as.formula(form, env=.GlobalEnv)
   }
@@ -586,6 +592,11 @@ regress <- function(fnctl, formula, data,
     # 
     mf[[1L]] <- quote(stats::model.frame)
     mf <- eval(mf, parent.frame())
+    if ("(weights)" %in% names(mf)) {
+      weights <- as.vector(stats::model.weights(mf))
+    } else {
+      weights <- rep(1, nrow(mf))
+    }
     if (nrow(mf) == 0){
       # Yiqun: more informative error message?
       stop("No (non-missing) observations!")
@@ -622,9 +633,9 @@ regress <- function(fnctl, formula, data,
     if (length(weights) != n) {
       stop("Response variable and weights must be of same length")
     }
-    if (length(subset) != n) {
-      stop("Response variable and subsetting variable must be of same length")
-    }
+    # if (length(subset) != n) {
+    #   stop("Response variable and subsetting variable must be of same length")
+    # }
     type <- attr(Y, "type")
     if (type != "right" && type != "counting") {
       stop(paste("Cox model doesn't support \"", type, "\" survival data", 

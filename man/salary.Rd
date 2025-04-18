@@ -26,14 +26,14 @@ A data frame with 19792 rows and 11 variables:
 
 \item{rank}{rank of the faculty member in this year: Assist (Assistant), Assoc (Associate), or Full (Full)}
 
-\item{admin}{indicator of whether the faculty member had administrative duties (eg, department chair) in this year: 1 (yes), or 0 (no)}
+\item{admin}{Indicator of whether the faculty member had administrative duties (eg, department chair) in this year: 1 (yes), or 0 (no)}
 
 \item{salary}{monthly salary of the faculty member in this year in dollars}
 
 }
 }
 \source{
-\url{http://www.emersonstatistics.com/datasets/salary.txt}
+\url{https://rct-design.com/TeachingMaterials/Datasets/salary.txt}
 }
 \usage{
 salary
@@ -43,6 +43,6 @@ Data from a study of 1,597 faculty members at a single US university. Includes i
 monthly salary each year from 1976 through 1995,  as well as sex, highest degree attained, 
 year of highest degree, field, year hired, rank, and administrative duties. 
 More information, including a coding key, is available at
-\url{http://www.emersonstatistics.com/datasets/salary.doc}.
+\url{https://rct-design.com/TeachingMaterials/Datasets/salary.txt}.
 }
 \keyword{datasets}

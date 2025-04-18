@@ -367,6 +367,24 @@ test_that("regress() returns same output as coxph() for fnctl = hazard", {
   
 })
 
+mri2 <- read.table("https://rct-design.com/TeachingMaterials/Datasets/mri.txt", header = T)
+mri2$obstime_yrs <- mri2$obstime/365.25
+mri2$ldlcat <- cut(mri2$ldl, breaks=c(0, 70, 100, 130, 160, 190, 250), right=FALSE)
+mri2$surv <- Surv(mri2$obstime_yrs, mri2$death)
+mod_rigr_missing <-  regress("hazard", surv~factor(ldlcat), data = mri2)
+mri_rmna <- mri2[!is.na(mri2$ldlcat), ]
+mod_rigr_subset <- regress("hazard", surv~factor(ldlcat), data = mri_rmna)
+
+test_that("regress() properly removes missing data for fnctl = hazard", {
+  # Estimate
+  expect_equal(unname(mod_rigr_missing$augCoefficients[, colnames(mod_rigr_missing$augCoefficients) == "Estimate"]),
+               unname(mod_rigr_subset$augCoefficients[, colnames(mod_rigr_subset$augCoefficients) == "Estimate"]))
+  # naive SE
+  expect_equal(as.vector(mod_rigr_missing$coefficients[, colnames(mod_rigr_missing$coefficients) == "se(coef)"]),
+               as.vector(mod_rigr_subset$coefficients[, colnames(mod_rigr_subset$coefficients) == "se(coef)"]))
+  
+})
+
 ### interaction terms in lms
 data(fev)
 fev_df <- fev
@@ -464,7 +482,7 @@ theta_hat <- mod_glm$coefficients
 n <- 2
 V_hat <- sandwich::sandwich(mod_glm, adjust = TRUE)
 smoke_F <- as.vector(t(R %*% theta_hat) %*% solve(R %*% (V_hat) %*% t(R)) %*% (R %*% theta_hat) / n)
-smoke_p <- 1 - pchisq(smoke_F, 2)
+smoke_p <- 1 - pchisq(2 * smoke_F, 2)
 
 test_that("regress() returns same output as lm() when doing F-test using U() function", {
   # Estimate
@@ -1242,3 +1260,30 @@ test_that("case diagnostics are correct", {
 #   expect_s3_class(influence.measures(mri_reg1), "infl") 
 #   
 # })
+
+test_that("regress works for a long formula", {
+  mri_complete <- mri[mri %>% complete.cases, ]
+  mri_tte <- survival::Surv(mri_complete$obstime, mri_complete$death)
+  mri_complete$mri_tte <- mri_tte
+  expect_silent({
+    my_regress <- regress("hazard", mri_tte ~ height + weight + race + sex + age + dsst + atrophy +
+                          plt + sbp + fev + dsst + atrophy + chf + chf + alcoh, 
+                        data=mri_complete )
+  })
+  expect_equal(nrow(my_regress$coefficients), 14)
+  
+})
+
+### F-stat and Chi-squared tests are asymptotically equivalent using U(.)
+
+mod1 <- regress("mean", atrophy ~ age + U(smoke = ~packyrs + yrsquit),
+                data = mri, useFdstn = TRUE)
+mod2 <- regress("mean", atrophy ~ age + U(smoke = ~packyrs + yrsquit),
+                data = mri, useFdstn = FALSE)
+
+test_that("F-stat and chi-squared tests are asymptotically equivalennt for U()", {
+  expect_equal(mod2$augCoefficients["smoke", "Pr(>Chi2)"] -
+                 mod1$augCoefficients["smoke", "Pr(>F)"],
+               0,
+               tolerance = 0.001) # tolerance to accommodate finite sample approximation
+})
